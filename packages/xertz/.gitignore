@@ -1,6 +1,3 @@
-node_modules
-build
-.yo-repository
 *-debug.log
 *-error.log
 /.nyc_output

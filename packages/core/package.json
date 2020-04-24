@@ -1,0 +1,25 @@
+{
+  "name": "@xertz/core",
+  "version": "0.0.0",
+  "author": {
+    "name": "Michael Edelman",
+    "email": "michael@fabulas.io",
+    "url": "https://twitter.com/edelman215"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "main": "build/index.js",
+  "module": "build/index.es.js",
+  "jsnext:main": "build/index.es.js",
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "develop": "rollup -c --watch"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
