@@ -1,6 +1,8 @@
 import { Context } from "./Context";
 import { Transformer } from "./Transformer";
 import { FileSystem } from "./FileSystem";
+import { InfrastructureManager } from "./Infrastructrure";
+import * as cdk from "@aws-cdk/core";
 import {
   FieldDefinitionNode,
   printSchema,
@@ -14,12 +16,14 @@ import {
   addMutationFieldsForObjects,
 } from "./transformers";
 import { writeFileSync } from "fs";
+import { App } from "@aws-cdk/core";
 
 export class Builder {
   private fs: FileSystem = new FileSystem();
   private transformer: Transformer;
   private schema: string;
   private context: Context;
+  private builder: cdk.App = new App();
 
   constructor(protected config: { inputs: string[] }) {
     this.schema = this.init.schema();
@@ -55,11 +59,10 @@ export class Builder {
     this.transformer.schedule(addQueryFieldsForObjects);
     this.transformer.schedule(addMutationFieldsForObjects);
     this.context = this.transformer.run();
-    const schema = buildASTSchema({
-      kind: Kind.DOCUMENT,
-      definitions: this.context.rollupSchemaDefinitions(),
+    const stack = new InfrastructureManager(this.builder, "XertzInfra", {
+      context: this.context,
+      fs: this.fs,
     });
-
-    writeFileSync("./transformed.graphql", printSchema(schema));
+    const res = this.builder.synth();
   };
 }

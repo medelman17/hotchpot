@@ -12,6 +12,8 @@ import {
   InputValueDefinitionNode,
   InputObjectTypeDefinitionNode,
   FieldDefinitionNode,
+  buildASTSchema,
+  printSchema,
 } from "graphql";
 import { rootReducer, actions } from "./reducers";
 import { SharedContext } from "./ContextShared";
@@ -123,6 +125,15 @@ export class Context {
     const { objects, scalars, interfaces, inputs, enums, unions } = this.state;
     return [].concat(objects, scalars, interfaces, inputs, enums, unions);
   }
+
+  makeSchema = () => {
+    return printSchema(
+      buildASTSchema({
+        kind: Kind.DOCUMENT,
+        definitions: this.rollupSchemaDefinitions(),
+      })
+    );
+  };
 
   get dispatch() {
     return this.store.dispatch;
