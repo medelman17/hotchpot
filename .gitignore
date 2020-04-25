@@ -10,3 +10,4 @@ build
 /tmp
 node_modules
 coverage
+transformed.graphql

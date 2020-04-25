@@ -94,8 +94,8 @@ export class Context {
         } else {
           this.put.type(
             Context.Build.Object(typeName, {
-              fields: type.fields ? [...type.fields, ...fields] : fields,
               ...type,
+              fields: type.fields ? [...type.fields, ...fields] : fields,
             })
           );
         }

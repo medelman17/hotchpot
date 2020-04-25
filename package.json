@@ -7,6 +7,7 @@
   "scripts": {
     "x:build": "./packages/xertz/bin/run build",
     "x:deploy": "./packages/xertz/bin/run build",
+    "develop:core": "yarn workspace @xertz/core develop",
     "build:core": "yarn workspace @xertz/core build",
     "test:core": "yarn workspace @xertz/core test --coverage"
   },
