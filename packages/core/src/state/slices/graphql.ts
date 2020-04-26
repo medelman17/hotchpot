@@ -108,7 +108,7 @@ const fieldAdapter = createEntityAdapter<
   }
 >({
   selectId: (input) => {
-    console.log(input);
+    // console.log(input);
     const { parent, name } = input;
     const parentName = parent.name.value;
     return `${parentName}#${name.value}`;

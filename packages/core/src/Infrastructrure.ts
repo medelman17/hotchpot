@@ -72,35 +72,9 @@ export class InfrastructureManager extends cdk.Stack {
   }
 
   handle = () => {
-    const interfaces = this.context.interfaces;
-    const query = this.context.query;
-    console.log(query);
+    const { infra } = this.context.store.getState();
 
-    const queryFields = query.fields;
-    queryFields.forEach((f) => {
-      // console.log(f);
-      const fieldName = f.name.value;
-      const returnType = f.type;
-      let returnTypeName;
-      if (f.type.kind === "NamedType") {
-        returnTypeName = f.type.name.value;
-      } else if (f.type.kind === "ListType") {
-        //@ts-ignore
-        returnTypeName = f.type.type.name.value;
-      }
-      const rt = this.context.getType(returnTypeName);
-    });
-
-    for (const i of interfaces) {
-      const name = i.name.value;
-    }
-
-    const t = this.table.template.create.entity.request({
-      entityName: "Mike",
-      interfaceName: "Whatever",
-    });
-
-    console.log(t);
+    // iterate through scheduled infra jobs and execute
   };
 
   init = {

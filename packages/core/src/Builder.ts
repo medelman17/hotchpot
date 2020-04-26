@@ -4,18 +4,13 @@ import { FileSystem } from "./FileSystem";
 import { InfrastructureManager } from "./Infrastructrure";
 import * as cdk from "@aws-cdk/core";
 import {
-  FieldDefinitionNode,
-  printSchema,
-  Kind,
-  buildASTSchema,
-} from "graphql";
-import {
   addStandardFieldsToObjectTypes,
   addQueryFieldsForObjects,
   addQueryFieldsForInterfaces,
   addMutationFieldsForObjects,
+  generatePlan,
 } from "./transformers";
-import { writeFileSync } from "fs";
+
 import { App } from "@aws-cdk/core";
 
 export class Builder {
@@ -58,13 +53,13 @@ export class Builder {
     this.transformer.schedule(addQueryFieldsForInterfaces);
     this.transformer.schedule(addQueryFieldsForObjects);
     this.transformer.schedule(addMutationFieldsForObjects);
+    this.transformer.schedule(generatePlan);
     this.context = this.transformer.run();
-    console.log(this.context.store.getState());
-    // console.log(this.context.store.getState());
-    // const stack = new InfrastructureManager(this.builder, "XertzInfra", {
-    //   context: this.context,
-    //   fs: this.fs,
-    // });
-    // const res = this.builder.synth();
+
+    const stack = new InfrastructureManager(this.builder, "XertzInfra", {
+      context: this.context,
+      fs: this.fs,
+    });
+    const res = this.builder.synth();
   };
 }
