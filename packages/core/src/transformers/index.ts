@@ -103,7 +103,7 @@ function buildListQueryFieldForType(
   const inputName = capitalize(`${fieldName}WhereInput`);
 
   const field = Context.Build.Field(fieldName, {
-    type: Context.Build.Named(name),
+    type: Context.Build.List(Context.Build.Named(name)),
     arguments: [
       Context.Build.Argument("limit", {
         type: Context.Build.Named("Int"),

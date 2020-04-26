@@ -1,0 +1,11 @@
+
+[project]
+name = ""
+
+
+[paths]
+input = ["./graphql"]
+
+
+[filters]
+input = ['.graphql']

@@ -9,6 +9,10 @@ import {
   CfnDataSource,
   CfnResolver,
   FieldLogLevel,
+  MappingTemplate,
+  PrimaryKey,
+  Assign,
+  Values,
 } from "@aws-cdk/aws-appsync";
 import {
   Table,
@@ -18,6 +22,7 @@ import {
   ProjectionType,
 } from "@aws-cdk/aws-dynamodb";
 import { Role, ServicePrincipal, ManagedPolicy } from "@aws-cdk/aws-iam";
+import { TemplateHeader } from "./MappingTemplate";
 
 export type InfrastructureManagerProps = { context: Context; fs: FileSystem };
 
@@ -62,7 +67,41 @@ export class InfrastructureManager extends cdk.Stack {
       tableName: this.res.Table.tableName,
       serviceRoleArn: this.res.TableRole.roleArn,
     });
+
+    this.handle();
   }
+
+  handle = () => {
+    const interfaces = this.context.interfaces;
+    const query = this.context.query;
+    console.log(query);
+
+    const queryFields = query.fields;
+    queryFields.forEach((f) => {
+      // console.log(f);
+      const fieldName = f.name.value;
+      const returnType = f.type;
+      let returnTypeName;
+      if (f.type.kind === "NamedType") {
+        returnTypeName = f.type.name.value;
+      } else if (f.type.kind === "ListType") {
+        //@ts-ignore
+        returnTypeName = f.type.type.name.value;
+      }
+      const rt = this.context.getType(returnTypeName);
+    });
+
+    for (const i of interfaces) {
+      const name = i.name.value;
+    }
+
+    const t = this.table.template.create.entity.request({
+      entityName: "Mike",
+      interfaceName: "Whatever",
+    });
+
+    console.log(t);
+  };
 
   init = {
     api: (args: {
@@ -143,6 +182,38 @@ export class InfrastructureManager extends cdk.Stack {
     },
   };
 
+  api = {
+    add: {
+      tableResolver: (args: {
+        name: string;
+        apiId: string;
+        fieldName: string;
+        typeName: string;
+        requestTemplate: string;
+        responseTemplate: string;
+      }) => {
+        const {
+          name,
+          apiId,
+          fieldName,
+          typeName,
+          requestTemplate,
+          responseTemplate,
+        } = args;
+        const resolver = new CfnResolver(this, name, {
+          apiId,
+          fieldName,
+          typeName,
+          dataSourceName: this.res.DataSource.name,
+          requestMappingTemplate: requestTemplate,
+          responseMappingTemplate: responseTemplate,
+        });
+        resolver.addDependsOn(this.res.Schema);
+        resolver.addDependsOn(this.res.DataSource);
+      },
+    },
+  };
+
   table = {
     add: {
       gsi: (args: {
@@ -184,6 +255,83 @@ export class InfrastructureManager extends cdk.Stack {
       fullAccess: (policy: IGrantable) =>
         this.res.Table.grantFullAccess(policy),
       streamAccess: (policy: IGrantable) => this.res.Table.grantStream(policy),
+    },
+    template: {
+      get: {
+        entity: {
+          request: () => {},
+          response: () => {},
+        },
+      },
+      list: {
+        entity: {
+          request: () => {},
+          response: () => {},
+        },
+        interface: {
+          request: (args: { interfaceName: string }) => {
+            return MappingTemplate.fromString(
+              ` {
+                  "version": "2017-02-28",
+                  "operation": "Query",
+                  "query": {
+                    "expression": "#PK = :pk",
+                    "expressionNames": { "#PK": "PK" },
+                    "expressionValues": {":pk": $util.dynamodb.toDynamoDBJson("Interface#${args.interfaceName}")}
+                  }
+                }
+              `
+            );
+          },
+          response: () => {
+            return MappingTemplate.dynamoDbResultList().renderTemplate();
+          },
+        },
+      },
+      create: {
+        entity: {
+          request: (args: { interfaceName: string; entityName: string }) => {
+            const header = TemplateHeader.attribute("typename")
+              .is(args.entityName)
+              .attribute("interface")
+              .is(args.interfaceName)
+              .attribute("id")
+              .is("$util.autoId()")
+              .renderTemplate();
+            const base = MappingTemplate.dynamoDbPutItem(
+              new PrimaryKey(
+                new Assign("PK", '"Interface#$extra.interface"'),
+                new Assign("SK", '"$extra.typename#$extra.id"')
+              ),
+              Values.projecting()
+                .attribute("__typename")
+                .is(args.entityName)
+                .attribute("createdAt")
+                .is("$util.time.nowISO8601()")
+                .attribute("updatedAt")
+                .is("$util.time.nowISO8601()")
+                .attribute("id")
+                .is("$extra.id")
+            ).renderTemplate();
+            return MappingTemplate.fromString([header, base].join("\n"));
+          },
+          response: () => {
+            return MappingTemplate.dynamoDbResultItem().renderTemplate();
+          },
+        },
+      },
+      update: {
+        entity: {
+          request: () => {},
+          response: () => {},
+        },
+      },
+      delete: {
+        entity: {
+          request: () => {},
+          response: () => {},
+        },
+      },
     },
   };
 }

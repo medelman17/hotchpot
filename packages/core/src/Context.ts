@@ -1,4 +1,5 @@
-import { createStore } from "redux";
+import { createStore, combineReducers } from "redux";
+import { configureStore, applyMiddleware } from "@reduxjs/toolkit";
 import {
   TypeDefinitionNode,
   Kind,
@@ -14,8 +15,9 @@ import {
   FieldDefinitionNode,
   buildASTSchema,
   printSchema,
+  visit,
 } from "graphql";
-import { rootReducer, actions } from "./reducers";
+import rootReducer, { actions } from "./state";
 import { SharedContext } from "./ContextShared";
 import {
   BuildObjectProps,
@@ -26,7 +28,11 @@ import {
 import { DEFAULT_SCHEMA_DEFINITION } from "./fixtures";
 
 export class Context {
-  private store = createStore(rootReducer);
+  private reducers = [{ root: rootReducer }];
+  public store = configureStore({
+    reducer: rootReducer,
+    middleware: [],
+  });
   private sdl: string;
   private inputDocument: DocumentNode;
   public metadata = new SharedContext();
@@ -43,6 +49,11 @@ export class Context {
   init = {
     queryType: () => {
       if (!this.query) {
+        this.dispatch(
+          actions[Kind.OBJECT_TYPE_DEFINITION].add(
+            Context.Build.Object("Query")
+          )
+        );
         this.dispatch({
           type: "ADD",
           kind: Kind.OBJECT_TYPE_DEFINITION,
@@ -52,6 +63,11 @@ export class Context {
     },
     mutationType: () => {
       if (!this.mutation) {
+        this.dispatch(
+          actions[Kind.OBJECT_TYPE_DEFINITION].add(
+            Context.Build.Object("Mutation")
+          )
+        );
         this.dispatch({
           type: "ADD",
           kind: Kind.OBJECT_TYPE_DEFINITION,
@@ -60,6 +76,7 @@ export class Context {
       }
     },
     schemaType: () => {
+      //@ts-ignore
       const { schema } = this.store.getState();
       if (schema === null) {
         this.store.dispatch({
@@ -71,10 +88,26 @@ export class Context {
     },
     definitions: () => {
       for (const definition of this.inputDocument.definitions) {
+        const d = visit(definition, {
+          enter: (node) => {
+            const { loc, ...rest } = node;
+            // Todo: what to do with loc? Hmm.
+            return { ...rest };
+          },
+          leave: (node, ...rest) => {
+            if (node.kind === Kind.FIELD_DEFINITION) {
+              this.dispatch(actions[node.kind].add({ node, other: rest }));
+            }
+          },
+        });
+
+        actions[definition.kind] &&
+          this.dispatch(actions[definition.kind].add(d));
+
         this.dispatch({
           type: "ADD",
           kind: definition.kind,
-          payload: definition,
+          payload: d,
         });
       }
     },
@@ -82,6 +115,7 @@ export class Context {
 
   add = {
     type: (type: TypeDefinitionNode) => {
+      this.dispatch(actions[type.kind].add(type as any));
       this.dispatch({ type: "ADD", kind: type.kind, payload: type });
     },
     field: {
@@ -107,11 +141,13 @@ export class Context {
 
   put = {
     type: (type: TypeDefinitionNode) => {
+      this.dispatch(actions[type.kind].put(type as any));
       this.dispatch({ type: "PUT", kind: type.kind, payload: type });
     },
   };
 
   getType(name: string) {
+    //@ts-ignore
     const { index, schema, ...rest } = this.state;
     const [node] = index.filter((item) => item.name === name);
     if (!node) {
@@ -122,6 +158,7 @@ export class Context {
   }
 
   rollupSchemaDefinitions() {
+    //@ts-ignore
     const { objects, scalars, interfaces, inputs, enums, unions } = this.state;
     return [].concat(objects, scalars, interfaces, inputs, enums, unions);
   }
@@ -144,36 +181,42 @@ export class Context {
   }
 
   get state() {
-    return this.store.getState();
+    return this.store.getState().root;
   }
 
   get query() {
-    const { objects } = this.store.getState();
+    //@ts-ignore
+    const { objects } = this.store.getState().root;
     let [query] = objects.filter((o) => o.name.value === "Query");
     return query;
   }
 
   get mutation() {
-    const { objects } = this.store.getState();
+    //@ts-ignore
+    const { objects } = this.store.getState().root;
     let [mutation] = objects.filter((o) => o.name.value === "Mutation");
     return mutation;
   }
 
   get objects() {
+    //@ts-ignore
     return this.state.objects.filter(
       (o) => !["Query", "Mutation", "Subscription"].includes(o.name.value)
     );
   }
 
   get interfaces() {
+    //@ts-ignore
     return this.state.interfaces;
   }
 
   get schema() {
+    //@ts-ignore
     return this.state.schema;
   }
 
   get inputs() {
+    //@ts-ignore
     return this.state.inputs;
   }
 

@@ -59,10 +59,12 @@ export class Builder {
     this.transformer.schedule(addQueryFieldsForObjects);
     this.transformer.schedule(addMutationFieldsForObjects);
     this.context = this.transformer.run();
-    const stack = new InfrastructureManager(this.builder, "XertzInfra", {
-      context: this.context,
-      fs: this.fs,
-    });
-    const res = this.builder.synth();
+    console.log(this.context.store.getState());
+    // console.log(this.context.store.getState());
+    // const stack = new InfrastructureManager(this.builder, "XertzInfra", {
+    //   context: this.context,
+    //   fs: this.fs,
+    // });
+    // const res = this.builder.synth();
   };
 }
