@@ -39,6 +39,103 @@ type Organization implements Actor {
 }
 ```
 
-And then Xertz transforms your schema into a fluent GraphQL API backed by a single-table DynamoDB data source.
+And then Xertz transforms your schema into a fluent GraphQL API backed by a single-table DynamoDB data source. Like this:
+
+```graphql
+type Person implements Actor {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  createdAt: String
+  updatedAt: String
+}
+
+type Organization implements Actor {
+  id: ID!
+  name: String!
+  people: [String]
+  other: String
+  createdAt: String
+  updatedAt: String
+}
+
+type Query {
+  getActor(where: GetActorWhereUniqueInput!): Actor
+  listActors(limit: Int, after: String): [Actor]
+  getPerson(where: GetPersonWhereUniqueInput!): Person
+  listPeople(limit: Int, after: String): [Person]
+  getOrganization(where: GetOrganizationWhereUniqueInput!): Organization
+  listOrganizations(limit: Int, after: String): [Organization]
+}
+
+type Mutation {
+  createPerson(input: CreatePersonInput!): Person
+  updatePerson(
+    where: UpdatePersonWhereUniqueInput!
+    input: UpdatePersonInput!
+  ): Person
+  deletePerson(where: DeletePersonWhereInput!): Person
+  createOrganization(input: CreateOrganizationInput!): Organization
+  updateOrganization(
+    where: UpdateOrganizationWhereUniqueInput!
+    input: UpdateOrganizationInput!
+  ): Organization
+  deleteOrganization(where: DeleteOrganizationWhereInput!): Organization
+}
+
+interface Actor {
+  id: ID!
+}
+
+input GetActorWhereUniqueInput {
+  id: ID!
+}
+
+input GetPersonWhereUniqueInput {
+  id: ID!
+}
+
+input GetOrganizationWhereUniqueInput {
+  id: ID!
+}
+
+input DeletePersonWhereInput {
+  id: ID!
+}
+
+input CreatePersonInput {
+  firstName: String!
+  lastName: String!
+}
+
+input UpdatePersonWhereUniqueInput {
+  id: ID!
+}
+
+input UpdatePersonInput {
+  firstName: String!
+  lastName: String!
+}
+
+input DeleteOrganizationWhereInput {
+  id: ID!
+}
+
+input CreateOrganizationInput {
+  name: String!
+  people: [String]
+  other: String
+}
+
+input UpdateOrganizationWhereUniqueInput {
+  id: ID!
+}
+
+input UpdateOrganizationInput {
+  name: String!
+  people: [String]
+  other: String
+}
+```
 
 ...break time (sorry)
