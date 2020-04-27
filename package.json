@@ -5,11 +5,11 @@
     "packages/*"
   ],
   "scripts": {
-    "x:build": "./packages/xertz/bin/run build",
-    "x:deploy": "./packages/xertz/bin/run build",
-    "develop:core": "yarn workspace @xertz/core develop",
-    "build:core": "yarn workspace @xertz/core build",
-    "test:core": "yarn workspace @xertz/core test --coverage"
+    "x:build": "./packages/hotchpot/bin/run build",
+    "x:deploy": "./packages/hotchpot/bin/run deploy",
+    "develop:core": "yarn workspace @hotch/core develop",
+    "build:core": "yarn workspace @hotch/core build",
+    "test:core": "yarn workspace @hotch/core test --coverage"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.2",

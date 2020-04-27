@@ -1,6 +1,6 @@
-# Xertz
+# Hotchpot
 
-Xertz is a proof of concept. Right now, it's fairly limited. It can take some SDL and turn it into a production-grade, cloud-native, serverless, fluent, graphql api. But, other than that, not much. But it's early days.
+Hotchpot is a proof of concept. Right now, it's fairly limited. It can take some SDL and turn it into a production-grade, cloud-native, serverless, fluent, graphql api. But, other than that, not much. But it's early days.
 
 ## Why?
 
@@ -14,11 +14,11 @@ That said, I'm not a NoSQL expert (is that a double negative or nah?) by any mea
 
 Enter GraphQL: with its now, ever-so-sexy, strong-typing. Rawr. Could we use that type system to (1) auto-generate optimized index/key-structures for many use cases and (2), if so, how far could we push it.
 
-Xertz is a POC re: (1)
+Hotchpot is a POC re: (1)
 
-## How Xertz Works
+## How Hotchpot Works
 
-You give Xertz a basic schema in GraphQL's Schema Definition Language (SDL). Like this:
+You give Hotchpot a basic schema in GraphQL's Schema Definition Language (SDL). Like this:
 
 ```graphql
 interface Actor {
@@ -39,7 +39,7 @@ type Organization implements Actor {
 }
 ```
 
-And then Xertz transforms your schema into a fluent GraphQL API backed by a single-table DynamoDB data source. Like this:
+And then Hotchpot transforms your schema into a fluent GraphQL API backed by a single-table DynamoDB data source. Like this:
 
 ```graphql
 type Person implements Actor {

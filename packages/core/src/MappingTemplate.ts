@@ -40,3 +40,5 @@ export class TemplateHeader {
     return new TemplateHeaderAttributeValues("{}").attribute(attr);
   }
 }
+
+export class XMappingTable {}

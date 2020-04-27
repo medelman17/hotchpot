@@ -4,8 +4,6 @@ import { FieldDefinitionNode, Kind, TypeNode } from "graphql";
 import { InfraJob } from "../state/slices/infra";
 
 export function generatePlan(context: Context) {
-  console.log("getting called");
-
   handleQuery(context);
   handleMutation(context);
 
@@ -16,7 +14,7 @@ function handleQuery(context: Context) {
   const query = context.query;
   const { fields } = query;
   for (const f of fields) {
-    const opType = getOpType(f);
+    const opType = getOpType(f) as keyof OpsMap;
     const returnTypeName = getReturnType(f.type);
     const returnType = context.getType(returnTypeName);
     const isInterface = returnType.kind === Kind.INTERFACE_TYPE_DEFINITION;
@@ -44,7 +42,7 @@ function handleMutation(context: Context) {
   const mutation = context.mutation;
   const { fields } = mutation;
   for (const f of fields) {
-    const opType = getOpType(f);
+    const opType = getOpType(f) as keyof OpsMap;
     const returnTypeName = getReturnType(f.type);
     const returnType = context.getType(returnTypeName);
     const isInterface = returnType.kind === Kind.INTERFACE_TYPE_DEFINITION;
@@ -69,13 +67,14 @@ function handleMutation(context: Context) {
 }
 
 function createInterfaceJob(args: {
-  op: string;
+  op: keyof OpsMap;
   returnType: string;
   fieldName: string;
   typeName: string;
 }): InfraJob {
   return {
     id: `${args.op}#${args.fieldName}#${args.returnType}`,
+    op: args.op,
     isInterface: true,
     isObject: false,
     isQuery: args.typeName === "Query",
@@ -88,7 +87,7 @@ function createInterfaceJob(args: {
 }
 
 function createObjectJob(args: {
-  op: string;
+  op: keyof OpsMap;
   returnType: string;
   fieldName: string;
   returnTypeInterface: string;
@@ -96,6 +95,7 @@ function createObjectJob(args: {
 }) {
   return {
     id: `${args.op}#${args.fieldName}#${args.returnType}`,
+    op: args.op,
     isInterface: false,
     isObject: true,
     isQuery: args.typeName === "Query",
@@ -124,6 +124,8 @@ const OpsMap = {
   UPDATE: "UPDATE",
   CREATE: "CREATE",
 };
+
+export type OpsMap = typeof OpsMap;
 
 function getOpType(field: FieldDefinitionNode) {
   const {

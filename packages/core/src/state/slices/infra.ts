@@ -1,6 +1,7 @@
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
-
+import { OpsMap } from "../../transformers";
 export type InfraJob = {
+  op: keyof OpsMap;
   id: string;
   isInterface: boolean;
   isObject: boolean;

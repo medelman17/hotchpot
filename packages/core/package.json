@@ -1,6 +1,6 @@
 {
-  "name": "@xertz/core",
-  "version": "0.0.0",
+  "name": "@hotch/core",
+  "version": "0.0.1-alpha8",
   "author": {
     "name": "Michael Edelman",
     "email": "michael@fabulas.io",
@@ -17,7 +17,7 @@
     "build"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "rm -rf build && rollup -c",
     "develop": "rollup -c --watch",
     "test": "jest",
     "test:watch": "jest --watch"

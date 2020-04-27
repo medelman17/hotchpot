@@ -1,0 +1,15 @@
+
+[project]
+name = "HotchRoot"
+
+
+[paths]
+input = ["./graphql"]
+
+
+[filters]
+input = ['.graphql']
+
+
+[aws]
+profile = "edelman@biztobiz"

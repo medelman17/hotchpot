@@ -15,7 +15,6 @@ const config = {
     "@aws-cdk/aws-appsync",
     "@aws-cdk/aws-lambnda",
     "@aws-cdk/aws-dynamodb",
-
     "@aws-cdk/aws-iam",
   ],
 };

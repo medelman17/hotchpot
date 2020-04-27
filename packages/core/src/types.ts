@@ -25,6 +25,14 @@ import {
   ListTypeNode,
 } from "graphql";
 
+type IndexKind =
+  | "objects"
+  | "interfaces"
+  | "scalars"
+  | "inputs"
+  | "enums"
+  | "unions";
+
 export type ContextRootState = {
   objects: ObjectTypeDefinitionNode[];
   scalars: ScalarTypeDefinitionNode[];
@@ -35,7 +43,7 @@ export type ContextRootState = {
   schema: SchemaDefinitionNode | null;
   index: {
     name: string;
-    kind: "objects" | "interfaces" | "scalars" | "inputs" | "enums" | "unions";
+    kind: IndexKind;
   }[];
 };
 
