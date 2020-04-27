@@ -1,6 +1,6 @@
 # Hotchpot
 
-Hotchpot is a proof of concept. Frankly, it probabky won't work. Even if it does,right now, it's fairly limited. It can take some SDL and turn it into a production-grade(-ish), cloud-native, serverless, fluent, graphql api. But, other than that, not much. But it's early days.
+Hotchpot is a proof of concept. Frankly, it probably won't work. Even if it does, right now, it's fairly limited. It can take some SDL and turn it into a production-grade(-ish), cloud-native, serverless, fluent, graphql api. But, other than that, not much. But it's early days.
 
 **Note: You must have an AWS account (with sufficient permissions) and the AWS CLI installed on your box to continue.**
 
