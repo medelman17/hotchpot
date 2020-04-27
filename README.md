@@ -1,8 +1,38 @@
 # Hotchpot
 
-Hotchpot is a proof of concept. Right now, it's fairly limited. It can take some SDL and turn it into a production-grade, cloud-native, serverless, fluent, graphql api. But, other than that, not much. But it's early days.
+Hotchpot is a proof of concept. Frankly, it probabky won't work. Even if it does,right now, it's fairly limited. It can take some SDL and turn it into a production-grade(-ish), cloud-native, serverless, fluent, graphql api. But, other than that, not much. But it's early days.
 
-## Why?
+**Note: You must have an AWS account (with sufficient permissions) and the AWS CLI installed on your box to continue.**
+
+First, install the `hotchpot` CLI.
+
+```
+npm i -g hotchpot
+```
+
+Then, in your favorite directory, create a new `hotch` project:
+
+```
+hotch init MyProject
+```
+
+Now, change directories into your new project and immediately deploy your AWS appsync backend:
+
+```
+hotch deploy
+```
+
+`Hotchpot` will take a look at the SDL defined in your project's `./graphql` directory and automatically generate a fluent api and the resolvers needed to make that baby slap. Then, `hotchpot` will deploy that baby to the cloud, using a single-table DynamoDB-backed datastore.
+
+After you deploy, feel free to play around with your new API at `http://localhost:4000` which runs a GraphQL Playground that proxyies your requests to AWS.
+
+## Major Limitations
+
+- All types must explicitly implement an interface.
+- Zero support for connections. This is coming. But not now.
+- Probably many others
+
+## Why Build This?
 
 The confluence of two events, really. One, I've been working a lot with AppSync and the AWS Amplify-ecosystem lately. Two, I read a book. Only the latter event is interesting, here.
 
