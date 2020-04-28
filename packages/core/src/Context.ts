@@ -28,7 +28,6 @@ import {
 import { DEFAULT_SCHEMA_DEFINITION } from "./fixtures";
 
 export class Context {
-  private reducers = [{ root: rootReducer }];
   public store = configureStore({
     reducer: rootReducer,
     middleware: [],

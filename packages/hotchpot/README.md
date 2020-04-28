@@ -21,7 +21,7 @@ $ npm install -g hotchpot
 $ hotch COMMAND
 running command...
 $ hotch (-v|--version|version)
-hotchpot/0.0.1-alpha11 darwin-x64 node-v12.16.1
+hotchpot/0.0.1-alpha13 darwin-x64 node-v12.16.1
 $ hotch --help [COMMAND]
 USAGE
   $ hotch COMMAND
@@ -45,7 +45,7 @@ USAGE
   $ hotch build
 ```
 
-_See code: [src/commands/build.ts](https://github.com/medelman17/xertz/blob/v0.0.1-alpha11/src/commands/build.ts)_
+_See code: [src/commands/build.ts](https://github.com/medelman17/xertz/blob/v0.0.1-alpha13/src/commands/build.ts)_
 
 ## `hotch deploy`
 
@@ -56,7 +56,7 @@ USAGE
   $ hotch deploy
 ```
 
-_See code: [src/commands/deploy.ts](https://github.com/medelman17/xertz/blob/v0.0.1-alpha11/src/commands/deploy.ts)_
+_See code: [src/commands/deploy.ts](https://github.com/medelman17/xertz/blob/v0.0.1-alpha13/src/commands/deploy.ts)_
 
 ## `hotch destroy`
 
@@ -65,7 +65,7 @@ USAGE
   $ hotch destroy
 ```
 
-_See code: [src/commands/destroy.ts](https://github.com/medelman17/xertz/blob/v0.0.1-alpha11/src/commands/destroy.ts)_
+_See code: [src/commands/destroy.ts](https://github.com/medelman17/xertz/blob/v0.0.1-alpha13/src/commands/destroy.ts)_
 
 ## `hotch help [COMMAND]`
 
@@ -100,5 +100,5 @@ ALIASES
   $ hotch i
 ```
 
-_See code: [src/commands/init.ts](https://github.com/medelman17/xertz/blob/v0.0.1-alpha11/src/commands/init.ts)_
+_See code: [src/commands/init.ts](https://github.com/medelman17/xertz/blob/v0.0.1-alpha13/src/commands/init.ts)_
 <!-- commandsstop -->

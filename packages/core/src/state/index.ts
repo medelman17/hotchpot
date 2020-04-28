@@ -8,6 +8,7 @@ import {
   enumSlice,
   scalarSlice,
   fieldSlice,
+  functionSlice,
 } from "./slices";
 import { Kind } from "graphql";
 import { rootReducer as root } from "../reducers/context";
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   enums: enumSlice.reducer,
   unions: unionSlice.reducer,
   fields: fieldSlice.reducer,
+  functions: functionSlice.reducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -6,17 +6,10 @@
   "scripts": {
     "build": "hotch build",
     "deploy": "hotch deploy",
-    "postdeploy": "node ./server/index.js",
-    "server": "node ./server/index.js"
+    "postdeploy": "node ./.pot/server.js",
+    "server": "node ./.pot/server.js"
   },
-  "dependencies": {
-    "hotchpot": "latest",
-    "@hotch/core": "latest",
-    "@aws-cdk/aws-appsync": "^1.35.0",
-    "@aws-cdk/aws-dynamodb": "^1.35.0",
-    "@aws-cdk/aws-lambda": "^1.35.0",
-    "@aws-cdk/core": "^1.35.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "apollo-link-context": "^1.0.20",
     "apollo-link-http": "^1.5.17",
@@ -24,6 +17,25 @@
     "graphql-tools": "^5.0.0",
     "apollo-server": "^2.12.0",
     "express": "^4.17.1",
-    "graphql": "^15.0.0"
+    "graphql": "^15.0.0",
+    "hotchpot": "latest",
+    "@hotch/core": "latest",
+    "@aws-cdk/aws-appsync": "^1.35.0",
+    "@aws-cdk/aws-dynamodb": "^1.35.0",
+    "@aws-cdk/aws-lambda": "^1.35.0",
+    "@aws-cdk/core": "^1.35.0",
+    "typescript": "^3.8.3",
+    "@types/node": "^13.13.2",
+    "ts-jest": "^25.4.0",
+    "ts-node": "^8.9.0",
+    "@types/jest": "^25.2.1",
+    "rollup": "^2.7.2",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "@wessberg/rollup-plugin-ts": "^1.2.24",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5"
   }
 }

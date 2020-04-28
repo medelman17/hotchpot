@@ -1,6 +1,12 @@
 import { Context } from "./Context";
 import { FileSystem } from "./FileSystem";
 import { IGrantable } from "@aws-cdk/aws-iam";
+import {
+  Function,
+  AssetCode,
+  Runtime,
+  StartingPosition,
+} from "@aws-cdk/aws-lambda";
 import * as cdk from "@aws-cdk/core";
 import {
   CfnGraphQLApi,
@@ -21,10 +27,14 @@ import {
   BillingMode,
   ProjectionType,
 } from "@aws-cdk/aws-dynamodb";
+import { DynamoEventSource } from "@aws-cdk/aws-lambda-event-sources";
+
 import { Role, ServicePrincipal, ManagedPolicy } from "@aws-cdk/aws-iam";
 import { TemplateHeader } from "./MappingTemplate";
 import { OpsMap } from "./transformers";
 import { InfraJob } from "./state/slices";
+import { HotchFunction } from "./InfraFunction";
+import { Util } from "./Util";
 
 export type InfrastructureManagerProps = {
   context: Context;
@@ -87,11 +97,39 @@ export class InfrastructureManager extends cdk.Stack {
     });
 
     this.handle();
+    this.handleFunctions();
   }
 
   named(s: string) {
     return `${this.project.name}_${s}`;
   }
+
+  handleFunctions = () => {
+    const { functions } = this.context.store.getState();
+    const { ids, entities } = functions;
+    for (const id of ids) {
+      const job = entities[id];
+      const hotchFunction = new Function(
+        this,
+        this.named(`${job.name}LambdaFunction`),
+        {
+          code: new AssetCode(job.outputDir),
+          handler: "index.handler",
+          runtime: Runtime.NODEJS_12_X,
+          environment: {
+            TABLE_NAME: this.res.Table.tableName,
+          },
+        }
+      );
+      this.res.Table.grantReadWriteData(hotchFunction);
+      this.res.Table.grantStreamRead(hotchFunction);
+      hotchFunction.addEventSource(
+        new DynamoEventSource(this.res.Table, {
+          startingPosition: StartingPosition.LATEST,
+        })
+      );
+    }
+  };
 
   handle = () => {
     const { infra } = this.context.store.getState();
@@ -205,6 +243,15 @@ export class InfrastructureManager extends cdk.Stack {
         billingMode: args.billingMode ?? BillingMode.PAY_PER_REQUEST,
         removalPolicy: args.removalPolicy ?? cdk.RemovalPolicy.DESTROY,
         stream: StreamViewType.NEW_AND_OLD_IMAGES,
+      });
+      new cdk.CfnOutput(this, "TableName", {
+        value: this.res.Table.tableName,
+      });
+      new cdk.CfnOutput(this, "TableArn", {
+        value: this.res.Table.tableArn,
+      });
+      new cdk.CfnOutput(this, "TableStreamArn", {
+        value: this.res.Table.tableStreamArn,
       });
     },
     tableRole: (args?: {}) => {
@@ -325,31 +372,7 @@ export class InfrastructureManager extends cdk.Stack {
       },
       create: {
         entity: {
-          request: (args: { interfaceName: string; entityName: string }) => {
-            // const header = TemplateHeader.attribute("typename")
-            //   .is(args.entityName)
-            //   .attribute("interface")
-            //   .is(args.interfaceName)
-            //   .attribute("id")
-            //   .is("$util.autoId()")
-            //   .renderTemplate();
-            // const base = MappingTemplate.dynamoDbPutItem(
-            //   new PrimaryKey(
-            //     new Assign("PK", '"Interface#$extra.interface"'),
-            //     new Assign("SK", '"$extra.typename#$extra.id"')
-            //   ),
-            //   Values.projecting()
-            //     .attribute("__typename")
-            //     .is(args.entityName)
-            //     .attribute("createdAt")
-            //     .is("$util.time.nowISO8601()")
-            //     .attribute("updatedAt")
-            //     .is("$util.time.nowISO8601()")
-            //     .attribute("id")
-            //     .is("$extra.id")
-            // ).renderTemplate();
-            // return MappingTemplate.fromString([header, base].join("\n"));
-          },
+          request: (args: { interfaceName: string; entityName: string }) => {},
           response: () => {
             return MappingTemplate.dynamoDbResultItem().renderTemplate();
           },

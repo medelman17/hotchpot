@@ -3,12 +3,14 @@
 name = ""
 
 
-[paths]
+[graphql]
 input = ["./graphql"]
+filters = [ ".graphql" ]
 
+[functions]
+input = ["./functions"]
+filters = [ ".graphql" ]
 
-[filters]
-input = ['.graphql']
 
 
 [aws]

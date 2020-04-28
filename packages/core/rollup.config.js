@@ -16,6 +16,12 @@ const config = {
     "@aws-cdk/aws-lambnda",
     "@aws-cdk/aws-dynamodb",
     "@aws-cdk/aws-iam",
+    "@aws-cdk/aws-lambda-event-sources",
+    "rollup",
+    "@wessberg/rollup-plugin-ts",
+    "rollup-plugin-commonjs",
+    "rollup-plugin-node-resolve",
+    "rollup-plugin-json",
   ],
 };
 

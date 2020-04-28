@@ -26,15 +26,18 @@ export class AppGenerator {
   }
 
   async installDeps() {
-    shelljs.cd(this.root);
-
-    const yarn = shelljs.which("yarn");
-    if (yarn !== null) {
-      await execa(yarn.stdout, [], { stdio: "inherit" });
+    if (!process.env.SKIPNPM) {
+      shelljs.cd(this.root);
+      const yarn = shelljs.which("yarn");
+      if (yarn !== null) {
+        await execa(yarn.stdout, [], { stdio: "inherit" });
+      } else {
+        await execa("npm", ["install"], { stdio: "inherit" });
+      }
+      shelljs.cd("..");
     } else {
-      await execa("npm", ["install"], { stdio: "inherit" });
+      console.log("Skipping NPM install...");
     }
-    shelljs.cd("..");
   }
 
   async createProjectDirectories() {
@@ -44,7 +47,10 @@ export class AppGenerator {
       );
     } else {
       shelljs.mkdir(this.root);
-      shelljs.cp("-r", `${this.templateDir}/*`, this.root);
+      shelljs.cp("-r", `${this.templateDir}/**/*`, this.root);
+      shelljs.cp("-r", `${this.templateDir}/.pot`, `${this.root}/.pot`);
+      shelljs.mkdir("-p", `${this.root}/.pot/schema`);
+      shelljs.mkdir("-p", `${this.root}/.pot/functions`);
     }
   }
 
@@ -68,6 +74,9 @@ export class AppGenerator {
       })
     );
     const pkg = { ...templatePkg, name: this.name };
-    writeFileSync(path.resolve(this.root, "package.json"), JSON.stringify(pkg));
+    writeFileSync(
+      path.resolve(this.root, "package.json"),
+      JSON.stringify(pkg, null, 2)
+    );
   }
 }

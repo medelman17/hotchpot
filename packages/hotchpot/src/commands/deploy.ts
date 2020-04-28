@@ -15,22 +15,39 @@ export class Deploy extends Command {
     );
 
     try {
-      const cdk = execa(
-        `cdk`,
-        this.createCdkArguments(config as BuilderConfig),
-        {
+      execa("cdk", this.createBootstrapArgs(config), {
+        stdio: "inherit",
+      }).then(() => {
+        execa(`cdk`, this.createCdkArguments(config as BuilderConfig), {
           stdio: "inherit",
-        }
-      );
-
-      // await cdk;
+        });
+      });
     } catch (error) {
       console.log(error);
     }
   }
 
+  createBootstrapArgs(config: BuilderConfig) {
+    let args = ["bootstrap"];
+    const { aws } = config;
+
+    if (aws.profile) {
+      args.push(`--profile`);
+      args.push(aws.profile);
+    } else {
+      // console.log("No profile");
+    }
+    return args;
+  }
+
   createCdkArguments(config: BuilderConfig) {
-    let args = ["deploy", "--outputs-file", "./hotchpot.json"];
+    let args = [
+      "deploy",
+      // "--app",
+      // "./node_modules/hotchpot/bin/run",
+      "--outputs-file",
+      "./.pot/hotchpot.stacks.json",
+    ];
     const { aws } = config;
 
     if (aws.profile) {
