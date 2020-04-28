@@ -1,4 +1,4 @@
-import pkg from "./package.json";
+import pkg from "../package.json";
 import typescript from "@wessberg/rollup-plugin-ts";
 import commonjs from "rollup-plugin-commonjs";
 import resolve from "rollup-plugin-node-resolve";
