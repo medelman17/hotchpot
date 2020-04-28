@@ -2,7 +2,7 @@ import Command from "@oclif/command";
 import * as execa from "execa";
 // import { spawn } from "child_process";
 //@ts-ignore
-import { BuilderConfig } from "@hotch/core";
+import { EngineConfig } from "@hotch/core";
 import { readFileSync, writeFileSync, ReadStream, WriteStream } from "fs";
 import * as toml from "@iarna/toml";
 
@@ -15,19 +15,24 @@ export class Deploy extends Command {
     );
 
     try {
-      execa("cdk", this.createBootstrapArgs(config), {
+      // execa(`cdk`, this.createCdkArguments(config as BuilderConfig), {
+      //   stdio: "inherit",
+      // });
+      execa("cdk", this.createBootstrapArgs(config as EngineConfig), {
         stdio: "inherit",
-      }).then(() => {
-        execa(`cdk`, this.createCdkArguments(config as BuilderConfig), {
-          stdio: "inherit",
-        });
-      });
+      })
+        .then(() => {
+          execa(`cdk`, this.createCdkArguments(config as EngineConfig), {
+            stdio: "inherit",
+          });
+        })
+        .catch((e) => console.log(e));
     } catch (error) {
       console.log(error);
     }
   }
 
-  createBootstrapArgs(config: BuilderConfig) {
+  createBootstrapArgs(config: EngineConfig) {
     let args = ["bootstrap"];
     const { aws } = config;
 
@@ -40,7 +45,7 @@ export class Deploy extends Command {
     return args;
   }
 
-  createCdkArguments(config: BuilderConfig) {
+  createCdkArguments(config: EngineConfig) {
     let args = [
       "deploy",
       // "--app",

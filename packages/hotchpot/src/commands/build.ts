@@ -1,5 +1,5 @@
 import Command from "@oclif/command";
-import { Engine as Builder, BuilderConfig, EngineConfig } from "@hotch/core";
+import { Engine as Builder, EngineConfig } from "@hotch/core";
 import { readFileSync, writeFileSync } from "fs";
 import * as toml from "@iarna/toml";
 import * as path from "path";

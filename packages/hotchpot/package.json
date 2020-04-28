@@ -1,6 +1,6 @@
 {
   "name": "hotchpot",
-  "version": "0.0.1-alpha13",
+  "version": "0.0.1-alpha17",
   "author": "Michael Edelman @medelman17",
   "bin": {
     "hotch": "./bin/run"
@@ -13,7 +13,12 @@
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^2",
     "execa": "^4.0.0",
-    "tslib": "^1"
+    "tslib": "^1",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/generator": "^7.9.5",
+    "@babel/preset-env": "^7.9.5",
+    "typescript": "^3.8.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -31,7 +36,7 @@
     "/lib",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json",
-    "../template"
+    "/template"
   ],
   "homepage": "https://github.com/medelman17/hotchpot",
   "keywords": [
