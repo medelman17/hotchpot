@@ -1268,6 +1268,25 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
+"@hotch/core@0.0.1-alpha9":
+  version "0.0.1-alpha9"
+  resolved "https://registry.yarnpkg.com/@hotch/core/-/core-0.0.1-alpha9.tgz#57c8f8a316f27e760660f0c97a1fa48d3d21702d"
+  integrity sha512-NPuL7pwOOMJh2uBzZnawaH1yX/5arNpL4G27xu+/3jt1r0cyDDSCCYV5Jps9tmlPQOJoiyYYPErJL3EKMRu9hA==
+  dependencies:
+    "@aws-cdk/aws-appsync" "^1.35.0"
+    "@aws-cdk/aws-dynamodb" "^1.35.0"
+    "@aws-cdk/aws-lambda" "^1.35.0"
+    "@aws-cdk/aws-lambda-event-sources" "^1.35.0"
+    "@aws-cdk/core" "^1.35.0"
+    "@reduxjs/toolkit" "^1.3.5"
+    aws-cdk "^1.35.0"
+    execa "^4.0.0"
+    graphql "^15.0.0"
+    pluralize "^8.0.0"
+    redux "^4.0.5"
+    rollup "^2.7.3"
+    shelljs "^0.8.4"
+
 "@iarna/toml@^2.2.5":
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/@iarna/toml/-/toml-2.2.5.tgz#b32366c89b43c6f8cefbdefac778b9c828e3ba8c"
@@ -7417,9 +7436,9 @@ lodash@^3.3.1:
   integrity sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=
 
 lodash@^4.0.0, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.2.1, lodash@^4.5.1:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
 log-symbols@3.0.0:
   version "3.0.0"
