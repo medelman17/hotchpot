@@ -1268,6 +1268,25 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
+"@hotch/core@0.0.1-alpha9":
+  version "0.0.1-alpha9"
+  resolved "https://registry.yarnpkg.com/@hotch/core/-/core-0.0.1-alpha9.tgz#57c8f8a316f27e760660f0c97a1fa48d3d21702d"
+  integrity sha512-NPuL7pwOOMJh2uBzZnawaH1yX/5arNpL4G27xu+/3jt1r0cyDDSCCYV5Jps9tmlPQOJoiyYYPErJL3EKMRu9hA==
+  dependencies:
+    "@aws-cdk/aws-appsync" "^1.35.0"
+    "@aws-cdk/aws-dynamodb" "^1.35.0"
+    "@aws-cdk/aws-lambda" "^1.35.0"
+    "@aws-cdk/aws-lambda-event-sources" "^1.35.0"
+    "@aws-cdk/core" "^1.35.0"
+    "@reduxjs/toolkit" "^1.3.5"
+    aws-cdk "^1.35.0"
+    execa "^4.0.0"
+    graphql "^15.0.0"
+    pluralize "^8.0.0"
+    redux "^4.0.5"
+    rollup "^2.7.3"
+    shelljs "^0.8.4"
+
 "@iarna/toml@^2.2.5":
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/@iarna/toml/-/toml-2.2.5.tgz#b32366c89b43c6f8cefbdefac778b9c828e3ba8c"
@@ -10669,9 +10688,9 @@ typescript@^3.8.3:
   integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
 
 ua-parser-js@^0.7.21:
-  version "0.7.21"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.21.tgz#853cf9ce93f642f67174273cc34565ae6f308777"
-  integrity sha512-+O8/qh/Qj8CgC6eYBVBykMrNtp5Gebn4dlGD/kKXVkJNDwyrAwSIqwz8CDf+tsAIWVycKcku6gIXJ0qwx/ZXaQ==
+  version "0.7.28"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.28.tgz#8ba04e653f35ce210239c64661685bf9121dec31"
+  integrity sha512-6Gurc1n//gjp9eQNXjD9O3M/sMwVtN5S8Lv9bvOYBfKfDNiIIhqiyi01vMBO45u4zkDE420w/e0se7Vs+sIg+g==
 
 uglify-js@^3.1.4:
   version "3.9.1"
